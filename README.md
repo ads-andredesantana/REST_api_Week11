@@ -6,6 +6,8 @@
 Creating new GET and PUT requests in the REST API
 The REST API needs to be modified and enhanced to offer data through new interaction points:
 
+
+### Testing on your browser:
 * GET: Returns all fields of all Service Request records that do not have a start date and are in "Pending" status.
   https://ads-andredesantana-rest-conso.azurewebsites.net/api/interventions
 * PUT: Change the status of the intervention request to "InProgress" and add a start date and time (Timestamp).
@@ -13,7 +15,19 @@ The REST API needs to be modified and enhanced to offer data through new interac
 * PUT: Change the status of the request for action to "Completed" and add an end date and time (Timestamp).
   https://ads-andredesantana-rest-conso.azurewebsites.net/api/interventions/id/completed
 
+### Testing on your Localhost: Clone the project and run It on your Localhost. The Routes will be as following:
+* GET: Returns all fields of all Service Request records that do not have a start date and are in "Pending" status.
+  https://Localhost:3000/api/interventions
+* PUT: Change the status of the intervention request to "InProgress" and add a start date and time (Timestamp).
+  https://Localhost:3000/api/interventions/id/inprogress
+* PUT: Change the status of the request for action to "Completed" and add an end date and time (Timestamp).
+  https://Localhost:3000/api/interventions/id/completed
+
+### Testing on Postman
+* Clicking on the button will send you to the postman collection (REST_API - Consolidation). Inside Postman you can click on the button "Runner" which will execute a sequence, retrieving and changing the information before restoring for further tests. (Supplied in the Codeboxx deliverable).
+
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e59caff4ae79127966f5)
+
 
 ### FALL-2020-TEAM-API-2 - Week 8 Odyssey 
 
