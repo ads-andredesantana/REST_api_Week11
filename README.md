@@ -1,16 +1,19 @@
 
 ## Rocket Elevators REST API
 
-### FALL-2020-TEAM-API-2 - Week 9 - Consolidation Odyssey 
+### FALL-2020 - Consolidation Week Odyssey - Week 9  
 
 Creating new GET and PUT requests in the REST API
 The REST API needs to be modified and enhanced to offer data through new interaction points:
 
 * GET: Returns all fields of all Service Request records that do not have a start date and are in "Pending" status.
+  https://ads-andredesantana-rest-conso.azurewebsites.net/api/interventions
 * PUT: Change the status of the intervention request to "InProgress" and add a start date and time (Timestamp).
+  https://ads-andredesantana-rest-conso.azurewebsites.net/api/interventions/id/inprogress
 * PUT: Change the status of the request for action to "Completed" and add an end date and time (Timestamp).
+  https://ads-andredesantana-rest-conso.azurewebsites.net/api/interventions/id/completed
 
-
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e59caff4ae79127966f5)
 
 ### FALL-2020-TEAM-API-2 - Week 8 Odyssey 
 
