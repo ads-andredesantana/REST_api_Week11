@@ -48,7 +48,7 @@ namespace Intervention_management.Controllers
         {
             var customers = await _context.customers.FindAsync(delay);
 
-            DateTime currentDate  = DateTime.Today;
+            DateTime currentDate = DateTime.Today;
             DateTime dateDelayAgo = currentDate.AddDays(-delay);
 
             System.Console.WriteLine(dateDelayAgo);
@@ -73,21 +73,21 @@ namespace Intervention_management.Controllers
         }
         // GET: api/Customers/count-in-between-date-and-date
         [HttpGet("count-in-between-{year1}-{month1}-{day1}-and-{year2}-{month2}-{day2}")]
-        public async Task<ActionResult<Int64>> CountCustomersInPeriod( long year1, long month1, long day1,long year2, long month2, long day2)
+        public async Task<ActionResult<Int64>> CountCustomersInPeriod(long year1, long month1, long day1, long year2, long month2, long day2)
         {
             // var customers = await _context.customers.FindAsync(delay);
 
             DateTime firstDate = new DateTime((int)year1, (int)month1, (int)day1);
             DateTime lastDate = new DateTime((int)year2, (int)month2, (int)day2);
 
-            DateTime currentDate  = DateTime.Today;
+            DateTime currentDate = DateTime.Today;
             // DateTime dateDelayAgo = currentDate.AddDays(-delay);
             List<Customer> customersAll = _context.customers.ToList();
             List<Customer> recentCustomers = new List<Customer>();
 
             foreach (Customer customer in customersAll)
             {
-                if (customer.customer_creation_date > firstDate && customer.customer_creation_date < lastDate )
+                if (customer.customer_creation_date > firstDate && customer.customer_creation_date < lastDate)
                 {
                     recentCustomers.Add(customer);
                 }
@@ -101,7 +101,7 @@ namespace Intervention_management.Controllers
         }
         // GET: api/Customers/count-in-between-date-and-date
         [HttpGet("customer-{id}-pruducts")]
-        public async Task<ActionResult<Dictionary<string,Int64>>> CountCustomersproducts( long id)
+        public async Task<ActionResult<Dictionary<string, Int64>>> CountCustomersproducts(long id)
         {
             // var customers = await _context.customers.FindAsync(delay);
 
@@ -113,11 +113,11 @@ namespace Intervention_management.Controllers
             List<Elevator> customerElevator = new List<Elevator>();
 
 
-            foreach( Building building in buildingsAll)
+            foreach (Building building in buildingsAll)
             {
                 if (building.customer_id == id)
                 {
-                customerBuilding.Add(building);
+                    customerBuilding.Add(building);
                 }
 
             }
@@ -128,19 +128,19 @@ namespace Intervention_management.Controllers
                     customerElevator.Add(elevator);
                 }
             }
-            Dictionary<string,Int64> buildingsAndElevatorsPerCustomer = new Dictionary<string, Int64>();
+            Dictionary<string, Int64> buildingsAndElevatorsPerCustomer = new Dictionary<string, Int64>();
 
             buildingsAndElevatorsPerCustomer.Add("Buildings", customerBuilding.Count);
             buildingsAndElevatorsPerCustomer.Add("Elevators", customerElevator.Count);
 
-            
+
             if (buildingsAndElevatorsPerCustomer == null)
             {
                 return NotFound();
             }
 
-            Dictionary<string,Int64> testDict = new Dictionary<string, Int64>();
-            testDict.Add("test",42);
+            Dictionary<string, Int64> testDict = new Dictionary<string, Int64>();
+            testDict.Add("test", 42);
             return buildingsAndElevatorsPerCustomer;
         }
 
@@ -177,7 +177,7 @@ namespace Intervention_management.Controllers
             return NoContent();
         }
 
-        
+
 
         private bool CustomerExists(long id)
         {
