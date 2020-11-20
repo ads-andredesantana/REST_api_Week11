@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -8,6 +9,7 @@ using intervention_management.Models;
 
 namespace Intervention_management.Controllers
 {
+    [Produces("application/json")]
     [Route("api/interventions")]
     [ApiController]
     public class InterventionsController : ControllerBase
@@ -18,129 +20,95 @@ namespace Intervention_management.Controllers
             _context = context;
         }
 
-
-        // GET api/interventions/all : to get the full intervention list
-        [HttpGet("all")]
-        public ActionResult<List<Interventions>> GetAll()
+        // GET: api/interventions: List of all interventions
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Interventions>>> GetInterventions()
         {
-            return _context.Interventions.ToList();
+            return await _context.interventions.ToListAsync();
         }
 
+        // GET: api/interventions/5
+        // GET: Returns all fields of all Service Request records that do not have a start date and are in "Pending" status.
+        // 1) Getting all existing interventions
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Interventions>> GetInterventionStatus(long id, String Status)
+        {
+            var intervention = await _context.interventions.FindAsync(id);
 
-        // GET api/interventions/pending : to get the intervention list with the "Pending" status and NO Starting Time
+            if (intervention == null)
+            {
+                return NotFound("Not Found");
+            }
+            return intervention;
+        }
+
+        // GET: api/interventions/pending - Return the intervention list with the "Pending" status without starting date
         [HttpGet("pending")]
-        public ActionResult<List<Interventions>> GetPending()
+        public async Task<ActionResult<List<Interventions>>> GetInterventionsList()
         {
-            var list = _context.Interventions.ToList();
-            if (list == null)
+
+          var list =  await _context.interventions.ToListAsync();
+
+               if (list == null)
             {
-                return NotFound("Not Found");
+                return NotFound();
             }
+   
+        List<Interventions> interventionList = new List<Interventions>();
 
-            List<Interventions> list_pending = new List<Interventions>();
+        foreach (var intervention in list){
 
-            foreach (var i in list)
-            {
+            if (intervention.status == "Pending" && intervention.start_date ==  null){
+         
+            interventionList.Add(intervention);
 
-                if ((i.status == "Pending") && (i.InterventionStartTime == null))
-                {
-                    list_pending.Add(i);
-                }
             }
-            return list_pending;
         }
+             return interventionList;
+            }
 
-
-        // GET api/interventions/inprogresslist : to get the intervention list with the "In Progress" status
-        [HttpGet("inprogresslist")]
-        public ActionResult<List<Interventions>> GetInProgress()
+       //Put the status of the the requested Intervention to "InProgress" and add a starting date and time (Timestamp).
+        [HttpPut("{id}/inprogress")]
+        public async Task<ActionResult<Interventions>> UpdateIntervention([FromRoute] long id)
         {
-            var list = _context.Interventions.ToList();
-            if (list == null)
+            var receivedIntervention = await this._context.interventions.FindAsync(id);
+            if (receivedIntervention == null)
             {
-                return NotFound("Not Found");
-            }
-
-            List<Interventions> list_inprogress = new List<Interventions>();
-
-            foreach (var i in list)
-            {
-
-                if ((i.status == "In Progress"))
-                {
-                    list_inprogress.Add(i);
-                }
-            }
-            return list_inprogress;
-        }
-
-
-        // GET api/interventions/5 : to get the status of one particular intervention id
-        [HttpGet("{id}", Name = "GetInterventions")]
-        public ActionResult GetById(string status, long id)
-        {
-            var item = _context.Interventions.Find(id);
-            if (item == null)
-            {
-                return NotFound("Not Found");
-            }
-            var json = new JObject();
-            json["status"] = item.status;
-            return Content(json.ToString(), "application/json");
-        }
-
-
-        // PUT api/interventions/inprogress/id : to modify a specified intervention status from "Pending" to "In Progress"
-        [HttpPut("inprogress/{id}")]
-        public string UpdateInProgress(long id)
-        {
-            var intrv = _context.Interventions.Find(id);
-            if (intrv == null)
-            {
-                return "Please enter an existing intervention id";
-            }
-            if (intrv.status != "Pending")
-            {
-                return "Please choose a Pending intervention";
+                return NotFound();
             }
             else
             {
-                intrv.status = "In Progress";
-
-                string InterventionStartTime = DateTime.Now.ToString("yyyy/MM/dd H:mm:ss");
-                intrv.InterventionStartTime = InterventionStartTime;
-
-                _context.Interventions.Update(intrv);
-                _context.SaveChanges();
-                return "The intervention #" + intrv.Id + " status has been successufully changed to In Progress at " + intrv.InterventionStartTime;
+                receivedIntervention.status = "Pending";
+                receivedIntervention.status = "In progress";
+                receivedIntervention.start_date = System.DateTime.Now;
             }
+            this._context.interventions.Update(receivedIntervention);
+            await this._context.SaveChangesAsync();
+            return Content("Intenvention status changed - ID: " + receivedIntervention.id +
+            " New Status: " + receivedIntervention.status + ". Starting date: "
+             + receivedIntervention.start_date + ".");
         }
 
-
-        // PUT api/interventions/completed/id : to update the status once the intervention is done
-        [HttpPut("completed/{id}")]
-        public string UpdateCompleted(long id)
+        //PUT the status of the requested Intervention to "Completed" and add an ending date and time (Timestamp).
+        [HttpPut("{id}/completed")]
+        public async Task<ActionResult<Interventions>> InterventionCompleted([FromRoute] long id)
         {
-            var intrv = _context.Interventions.Find(id);
-            if (intrv == null)
+            var receivedIntervention = await this._context.interventions.FindAsync(id);
+            if (receivedIntervention == null)
             {
-                return "Please enter an existing intervention id";
-            }
-            if (intrv.status != "In Progress")
-            {
-                return "Please choose an In Progress intervention";
+                return NotFound();
             }
             else
             {
-                intrv.status = "Completed";
-
-                string InterventionEndTime = DateTime.Now.ToString("yyyy/MM/dd H:mm:ss");
-                intrv.InterventionEndTime = InterventionEndTime;
-
-                _context.Interventions.Update(intrv);
-                _context.SaveChanges();
-                return "The intervention #" + intrv.Id + " status has been successufully changed to Completed at " + intrv.InterventionEndTime;
+                receivedIntervention.result = "Successful";
+                receivedIntervention.status = "Completed";
+                receivedIntervention.end_date = System.DateTime.Now;
             }
+            this._context.interventions.Update(receivedIntervention);
+            await this._context.SaveChangesAsync();
+            return Content("Intenvention status changed - ID: " + receivedIntervention.id +
+            " New Status: " + receivedIntervention.status + ". End date: "
+             + receivedIntervention.end_date + ".");
         }
     }
 }
