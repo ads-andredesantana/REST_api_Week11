@@ -47,6 +47,27 @@ namespace Intervention_management.Controllers
             return  elevator;
         }
 
+
+        // GET:api/elevators/customer-{id}
+        [HttpGet("customer-{id}")]
+        public ActionResult<List<Elevator>> GetCustomerElevators(long id)
+        {
+            // get a complete list of buildings
+            List<Elevator> elevatorsAll = _context.elevators.ToList();
+            List<Elevator> CustomerElevators = new List<Elevator>();
+            // select relevant buildings
+            foreach(Elevator elevator in elevatorsAll)
+            {
+                if (elevator.customer_id == id)
+                {
+                    // Only add elevators that belongs to the desired customer
+                    CustomerElevators.Add(elevator);
+                }
+            }
+            return CustomerElevators;
+        }
+
+
         // GET: api/elevators/status/5
         [HttpGet("status/{id}")]
         public async Task<ActionResult<String>> GetElevatorStatus(long id)

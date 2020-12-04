@@ -62,6 +62,27 @@ namespace Intervention_management.Controllers
         }
 
 
+        // GET:api/columns/customer-{id}
+        [HttpGet("customer-{id}")]
+        public ActionResult<List<Column>> GetCustomerColumns(long id)
+        {
+            // get a complete list of buildings
+            List<Column> columnsAll = _context.columns.ToList();
+            List<Column> CustomerColumns = new List<Column>();
+            // select relevant buildings
+            foreach(Column column in columnsAll)
+            {
+                if (column.customer_id == id)
+                {
+                    // Only add columns that belongs to the desired customer
+                    CustomerColumns.Add(column);
+                }
+            }
+            return CustomerColumns;
+        }
+
+
+
         // GET: api/columns/not-operating
         [HttpGet("not-operating")]
         public async Task<ActionResult<IEnumerable<Column>>> GetNotOperatingColumns()

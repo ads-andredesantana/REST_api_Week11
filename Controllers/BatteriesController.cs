@@ -43,6 +43,28 @@ namespace Intervention_management.Controllers
             return battery;
         }
 
+
+// GET:api/batteries/customer-{id}
+        [HttpGet("customer-{id}")]
+        public ActionResult<List<Battery>> GetCustomerBatteries(long id)
+        {
+            // get a complete list of buildings
+            List<Battery> batteriesAll = _context.batteries.ToList();
+            List<Battery> CustomerBatteries = new List<Battery>();
+            // select relevant buildings
+            foreach(Battery battery in batteriesAll)
+            {
+                if (battery.customer_id == id)
+                {
+                    // Only add batteries that belongs to the desired customer
+                    CustomerBatteries.Add(battery);
+                }
+            }
+            return CustomerBatteries;
+
+        }
+
+
         // GET: api/batteries/status/5
         [HttpGet("status/{id}")]
         public async Task<ActionResult<String>> GetBatteryStatus(long id)

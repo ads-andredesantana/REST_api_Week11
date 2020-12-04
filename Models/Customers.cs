@@ -19,4 +19,7 @@ public class Customer
     public long address_id { get; set; }
     public long employee_id { get; set; }
 
+    // public virtual ICollection<Building> Buildings { get; set; }
+    // }
+
 }

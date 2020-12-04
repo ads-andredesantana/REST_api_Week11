@@ -99,7 +99,7 @@ namespace Intervention_management.Controllers
 
             return recentCustomers.Count;
         }
-        // GET: api/Customers/count-in-between-date-and-date
+        // GET: api/customers/customer-5-pruducts
         [HttpGet("customer-{id}-pruducts")]
         public async Task<ActionResult<Dictionary<string, Int64>>> CountCustomersproducts(long id)
         {
@@ -176,8 +176,6 @@ namespace Intervention_management.Controllers
 
             return NoContent();
         }
-
-
 
         private bool CustomerExists(long id)
         {

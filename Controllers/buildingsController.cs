@@ -115,7 +115,6 @@ namespace Intervention_management.Controllers
                         {
                             counter ++ ;
                         }                     
-
                     }
                     if (counter == 0)
                     {
@@ -156,7 +155,50 @@ namespace Intervention_management.Controllers
             return building;
         }
 
-        
+
+        // [HttpGet("for-customer-{Id}")]
+        // public ActionResult<List<Building>> GetCustomerBuildings(long id)
+        // {
+
+        //     List<Building> buildingsAll = _context.buildings.ToList();
+        //     List<Building> CustomerBuildings = new List<Building>();
+
+        //     foreach (Building building in buildingsAll) 
+        //     {
+        //         if (building.customer_id == id) {
+
+        //             CustomerBuildings.Add(building);
+        //         }
+        //     }
+        //     if (CustomerBuildings== null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return CustomerBuildings;
+        // }
+
+
+// GET:api/buildings/customer-{id}
+        [HttpGet("customer-{id}")]
+        public ActionResult<List<Building>> GetCustomerBuildings(long id)
+        {
+            // get a complete list of buildings
+            List<Building> buildingsAll = _context.buildings.ToList();
+            List<Building> CustomersBuildings = new List<Building>();
+            // select relevant buildings
+            foreach(Building building in buildingsAll)
+            {
+                if (building.customer_id == id)
+                {
+                    // Only add buildings that belongs to the desired customer
+                    CustomersBuildings.Add(building);
+                }
+            }
+            return CustomersBuildings;
+
+        }
+
+
         private bool BuildingExists(long id)
         {
             return _context.buildings.Any(e => e.Id == id);
