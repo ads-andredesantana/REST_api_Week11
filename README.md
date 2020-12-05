@@ -13,7 +13,7 @@ https://ads-andredesantana-rest-conso.azurewebsites.net/api/columns/customer-5
 * GET: Returns all Elevators related to a customer (api/elevators/customer-{id})
 https://ads-andredesantana-rest-conso.azurewebsites.net/api/elevators/customer-5
 * GET: Returns all Customers (api/elevators/customer-{id})
-https://ads-andredesantana-rest-conso.azurewebsites.net/api/customers
+https://ads-andredesantana-rest-conso.azurewebsites.net/api/customer-5
 
 ### FALL-2020 - Consolidation Week Odyssey - Week 9  
 
