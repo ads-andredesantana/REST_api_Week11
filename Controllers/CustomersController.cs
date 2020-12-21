@@ -177,6 +177,46 @@ namespace Intervention_management.Controllers
             return NoContent();
         }
 
+        // Getting the client e-mail
+        // GET: api/customers/email
+        // [HttpGet("/email")]
+
+        // public async Task<ActionResult<CustomersController>> GetCustEmail(string email_company_contact)
+        // {
+        //     var cust = await _context.customers.FindAsync(email_company_contact);
+
+        //     if (cust.email_company_contact == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     return cust.email_company_contact;
+        // }
+
+        // GET: api/email
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Customer>> GetCust(long id)
+        {
+            var customer = await _context.customers.FindAsync(id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return customer;
+        }
+
+
+        // // GET: api/Customers
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Customer>>> GetcustEmail()
+        // {
+        //     return await _context.customers.email_company_contact.ToListAsync();
+        // }
+
+
+
         private bool CustomerExists(long id)
         {
             return _context.customers.Any(e => e.Id == id);

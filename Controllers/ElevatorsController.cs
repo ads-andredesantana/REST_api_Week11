@@ -44,7 +44,7 @@ namespace Intervention_management.Controllers
             Console.WriteLine(status);
 
 
-            return  elevator;
+            return elevator;
         }
 
 
@@ -56,7 +56,7 @@ namespace Intervention_management.Controllers
             List<Elevator> elevatorsAll = _context.elevators.ToList();
             List<Elevator> CustomerElevators = new List<Elevator>();
             // select relevant buildings
-            foreach(Elevator elevator in elevatorsAll)
+            foreach (Elevator elevator in elevatorsAll)
             {
                 if (elevator.customer_id == id)
                 {
@@ -87,8 +87,16 @@ namespace Intervention_management.Controllers
         [HttpGet("not-operating")]
         public async Task<ActionResult<IEnumerable<Elevator>>> GetNotOperatingElevators()
         {
-            return await _context.elevators.Where( e => e.status != "Active" ).ToListAsync();
+            return await _context.elevators.Where(e => e.status != "Active").ToListAsync();
         }
+
+        // GET: api/Elevators/intervention
+        // [HttpGet("intervention")]
+        // public async Task<ActionResult<IEnumerable<Elevator>>> GetInterventionElevators()
+        // {
+        //     return await _context.elevators.Where( e => e.status != "Active"  ).ToListAsync();
+        // }
+
 
         // PUT: api/Elevators/5/status
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -98,14 +106,14 @@ namespace Intervention_management.Controllers
         {
             //save elevator in a temporary variable
             var modifiedElevator = _context.elevators.Where(e => e.Id == elevator.Id).FirstOrDefault<Elevator>();
- 
+
 
 
             if (id != elevator.Id)
             {
                 return BadRequest();
             }
-            
+
             _context.Entry(modifiedElevator).State = EntityState.Detached;
             _context.Entry(elevator).State = EntityState.Modified;
 
@@ -142,7 +150,7 @@ namespace Intervention_management.Controllers
             return NoContent();
         }
 
-        
+
         private bool ElevatorExists(long id)
         {
             return _context.elevators.Any(e => e.Id == id);
