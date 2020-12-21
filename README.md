@@ -1,6 +1,20 @@
 
 ## Rocket Elevators REST API
 
+### FALL-2020 - Week 11 - Understanding the .Net Framework
+
+This week new interaction points were added to the REST API.
+
+### Testing on your browser:
+* GET: Returns all Batteries related to a customer (api/batteries/customer-{id})
+https://ads-andredesantana-rest-conso.azurewebsites.net/api/batteries/customer-5
+* GET: Returns all Columns related to a customer (api/columns/customer-{id})
+https://ads-andredesantana-rest-conso.azurewebsites.net/api/columns/customer-5
+* GET: Returns all Elevators related to a customer (api/elevators/customer-{id})
+https://ads-andredesantana-rest-conso.azurewebsites.net/api/elevators/customer-5
+* GET: Returns all Customers (api/elevators/customer-{id})
+https://ads-andredesantana-rest-conso.azurewebsites.net/api/customer-5
+
 ### FALL-2020 - Consolidation Week Odyssey - Week 9  
 
 Creating new GET and PUT requests in the REST API
